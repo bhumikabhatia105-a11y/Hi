@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>for you, bunny</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤍</text></svg>">
+<style>
+  :root {
+    --bg-top: #fdf6f3;
+    --bg-mid: #f9ecef;
+    --bg-bot: #f3e8f2;
+    --ink: #4a2f3d;
+    --ink-soft: #7a5c69;
+    --accent: #c46b8a;
+    --card: rgba(255, 255, 255, 0.62);
+    --card-line: rgba(196, 107, 138, 0.18);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100%;
+    background-image: linear-gradient(170deg, var(--bg-top) 0%, var(--bg-mid) 48%, var(--bg-bot) 100%);
+    background-repeat: no-repeat;
+    background-color: var(--bg-mid);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* soft floating hearts in the background */
+  .petals {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .petal {
+    position: absolute;
+    bottom: -8vh;
+    font-size: 1rem;
+    opacity: 0;
+    animation: drift linear infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes drift {
+    0%   { transform: translate3d(0, 0, 0) rotate(0deg);      opacity: 0; }
+    12%  { opacity: 0.55; }
+    88%  { opacity: 0.35; }
+    100% { transform: translate3d(6vw, -112vh, 0) rotate(28deg); opacity: 0; }
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 14vh 1.5rem 18vh;
+  }
+
+  /* ---------- opening ---------- */
+  .opening {
+    text-align: center;
+    margin-bottom: 16vh;
+  }
+  .opening .eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.4rem;
+  }
+  .opening h1 {
+    font-size: clamp(2.4rem, 9vw, 4rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.15;
+    margin: 0 0 1.4rem;
+  }
+  .opening p {
+    color: var(--ink-soft);
+    margin: 0 auto;
+    max-width: 26rem;
+  }
+
+  .rule {
+    width: 3.5rem;
+    height: 1px;
+    margin: 2.6rem auto 0;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  /* ---------- message cards ---------- */
+  .message {
+    background: var(--card);
+    border: 1px solid var(--card-line);
+    border-radius: 1.4rem;
+    padding: clamp(1.8rem, 5vw, 3rem);
+    margin: 0 0 3.5rem;
+    box-shadow: 0 18px 45px -30px rgba(120, 60, 85, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .message h2 {
+    font-size: clamp(1.5rem, 5.5vw, 2.05rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.3;
+    margin: 0 0 1.3rem;
+    color: var(--ink);
+  }
+  .message p {
+    margin: 0 0 1.15rem;
+    color: var(--ink-soft);
+  }
+  .message p:last-child { margin-bottom: 0; }
+  .message .always {
+    margin-top: 1.8rem;
+    font-style: italic;
+    font-size: 1.15rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+  }
+
+  /* ---------- closing ---------- */
+  .closing {
+    text-align: center;
+    margin-top: 14vh;
+  }
+  .closing p {
+    font-size: clamp(2rem, 8.5vw, 3.4rem);
+    font-style: italic;
+    line-height: 1.25;
+    margin: 0;
+    color: var(--accent);
+  }
+  .closing .heart {
+    display: block;
+    margin-top: 2rem;
+    font-size: 1.6rem;
+    animation: beat 2.6s ease-in-out infinite;
+  }
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    45%      { transform: scale(1.16); }
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 1.1s ease, transform 1.1s ease;
+  }
+  .reveal.shown {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .petals { display: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .closing .heart { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="petals" aria-hidden="true"></div>
+
+<main>
+
+  <header class="opening reveal">
+    <p class="eyebrow">for you</p>
+    <h1>hi, bunny</h1>
+    <p>some things i want you to read whenever you forget them.</p>
+    <div class="rule"></div>
+  </header>
+
+  <!-- To add another message, copy one <section class="message reveal"> block and place it above the closing. -->
+
+  <section class="message reveal">
+    <h2>you are more than enough baby</h2>
+    <p>you deserve more appreciation than you get and way way more respect than you're given. and most importantly, more credit for everything you've built, everything you are and everything you have been doing for everyone around you.</p>
+    <p>you are loved. I am very very proud of you and i love you.</p>
+    <p class="always">Always.</p>
+  </section>
+
+  <footer class="closing reveal">
+    <p>i love you, bunny</p>
+    <span class="heart" aria-hidden="true">🤍</span>
+  </footer>
+
+</main>
+
+<script>
+  // gentle drifting hearts
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var layer = document.querySelector('.petals');
+    var glyphs = ['🤍', '💗', '🌸', '✿'];
+    for (var i = 0; i < 14; i++) {
+      var p = document.createElement('span');
+      p.className = 'petal';
+      p.textContent = glyphs[i % glyphs.length];
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.fontSize = (0.7 + Math.random() * 0.9).toFixed(2) + 'rem';
+      p.style.animationDuration = (16 + Math.random() * 16).toFixed(1) + 's';
+      p.style.animationDelay = (-Math.random() * 26).toFixed(1) + 's';
+      layer.appendChild(p);
+    }
+  })();
+
+  // reveal sections as they scroll into view
+  (function () {
+    var items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('shown'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('shown');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
