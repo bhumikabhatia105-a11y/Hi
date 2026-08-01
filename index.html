@@ -35,7 +35,7 @@
     overflow-x: hidden;
   }
 
-  /* soft floating hearts in the background */
+  /* falling sakura petals */
   .petals {
     position: fixed;
     inset: 0;
@@ -43,19 +43,44 @@
     z-index: 0;
     overflow: hidden;
   }
+
+  /* outer span = the fall down the screen */
   .petal {
     position: absolute;
-    bottom: -8vh;
-    font-size: 1rem;
-    opacity: 0;
-    animation: drift linear infinite;
-    will-change: transform, opacity;
+    top: -10vh;
+    animation: fall linear infinite;
+    will-change: transform;
   }
-  @keyframes drift {
-    0%   { transform: translate3d(0, 0, 0) rotate(0deg);      opacity: 0; }
-    12%  { opacity: 0.55; }
-    88%  { opacity: 0.35; }
-    100% { transform: translate3d(6vw, -112vh, 0) rotate(28deg); opacity: 0; }
+  @keyframes fall {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(0, 118vh, 0); }
+  }
+
+  /* inner span = the sideways sway + tumble */
+  .petal i {
+    display: block;
+    width: 14px;
+    height: 13px;
+    background: radial-gradient(circle at 30% 30%, #ffd9e6 0%, #f7aec8 55%, #e88bae 100%);
+    border-radius: 100% 0 100% 0;
+    box-shadow: inset -1px -1px 2px rgba(200, 100, 140, 0.25);
+    opacity: 0.75;
+    animation: sway ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes sway {
+    from { transform: translateX(-26px) rotate(-24deg) scaleX(1); }
+    to   { transform: translateX(26px)  rotate(48deg)  scaleX(0.55); }
+  }
+
+  /* a few paler blossoms for depth */
+  .petal.pale i {
+    background: radial-gradient(circle at 30% 30%, #fffafc 0%, #ffe1ec 60%, #f6c3d6 100%);
+    opacity: 0.6;
+  }
+  .petal.deep i {
+    background: radial-gradient(circle at 30% 30%, #ffc7dc 0%, #ef9ab9 55%, #dd7ba1 100%);
+    opacity: 0.7;
   }
 
   main {
@@ -203,20 +228,34 @@
 </main>
 
 <script>
-  // gentle drifting hearts
+  // falling sakura petals
   (function () {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var layer = document.querySelector('.petals');
-    var glyphs = ['🤍', '💗', '🌸', '✿'];
-    for (var i = 0; i < 14; i++) {
-      var p = document.createElement('span');
-      p.className = 'petal';
-      p.textContent = glyphs[i % glyphs.length];
-      p.style.left = Math.random() * 100 + 'vw';
-      p.style.fontSize = (0.7 + Math.random() * 0.9).toFixed(2) + 'rem';
-      p.style.animationDuration = (16 + Math.random() * 16).toFixed(1) + 's';
-      p.style.animationDelay = (-Math.random() * 26).toFixed(1) + 's';
-      layer.appendChild(p);
+    var tones = ['', 'pale', 'deep'];
+    var count = window.innerWidth < 600 ? 18 : 30;
+
+    for (var i = 0; i < count; i++) {
+      var outer = document.createElement('span');
+      outer.className = ('petal ' + tones[i % tones.length]).trim();
+      outer.style.left = (Math.random() * 100).toFixed(2) + 'vw';
+
+      // farther-away petals are smaller, fainter and slower
+      outer.style.animationDuration = (9 + Math.random() * 11).toFixed(1) + 's';
+      outer.style.animationDelay = (-Math.random() * 20).toFixed(1) + 's';
+
+      // size goes on the petal itself — the outer span's transform is owned
+      // by the fall animation, so an inline scale there would be overridden
+      var size = 8 + Math.random() * 10;
+      var inner = document.createElement('i');
+      inner.style.width = size.toFixed(1) + 'px';
+      inner.style.height = (size * 0.92).toFixed(1) + 'px';
+      inner.style.opacity = (0.45 + Math.random() * 0.35).toFixed(2);
+      inner.style.animationDuration = (2.2 + Math.random() * 2.6).toFixed(1) + 's';
+      inner.style.animationDelay = (-Math.random() * 4).toFixed(1) + 's';
+
+      outer.appendChild(inner);
+      layer.appendChild(outer);
     }
   })();
 
