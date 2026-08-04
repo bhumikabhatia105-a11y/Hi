@@ -274,8 +274,9 @@
   .closing .trio {
     display: block;
     font-size: 1.5rem;
-    letter-spacing: 0.7em;
-    padding-left: 0.7em; /* offsets the trailing letter-space so it stays centred */
+    /* single glyph — no letter-spacing, so it centres on its own. If you ever
+       put several emoji back, add letter-spacing plus a matching padding-left
+       to cancel the trailing space. */
   }
 
   /* ===================== reveal ===================== */
@@ -319,8 +320,8 @@
   <section class="hero reveal">
     <div class="inner">
       <span class="label">a little something, made just for you</span>
-      <h1>Bunny 🐰</h1>
-      <p class="pair">Bunny 🐰 &amp; Hello Kitty 🎀</p>
+      <h1>Bunny &lt;3</h1>
+      <p class="pair">Bunny &amp; Hello Kitty</p>
       <p class="vow">hopelessly, completely in love</p>
       <span class="scroll-cue">scroll down, my love ↓</span>
     </div>
@@ -397,11 +398,18 @@
     </div>
   </section>
 
+  <section class="reveal">
+    <div class="inner">
+      <span class="label">4th august 2026</span>
+      <p>I honestly feel bad right now because you were being weird with me but I know you love me very much and I know you must've had a very tough day you told me you feel very tired and you're swamped with business work plus dad's work as well and I know it's really tough, everything is really tough but just know that I'm always here for you and I really really love you</p>
+    </div>
+  </section>
+
   <section class="closing reveal">
     <div class="inner">
-      <h2>I love you, Bunny.</h2>
+      <h2>I love you, Dhruv.</h2>
       <p class="signoff">yours, molly.</p>
-      <span class="trio" aria-hidden="true">🐰💗🎀</span>
+      <span class="trio" aria-hidden="true">💗</span>
     </div>
   </section>
 
